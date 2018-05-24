@@ -1,0 +1,8 @@
+// union (common data)
+
+SELECT firstName, city FROM custmer
+WHERE city = 'Dhaka'
+UNION
+SELECT firstName, city FROM suppliers
+WHERE city = 'Dhaka'
+ORDER BY firstName;

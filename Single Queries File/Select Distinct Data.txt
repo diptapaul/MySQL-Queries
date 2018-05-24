@@ -1,0 +1,1 @@
+SELECT DISTINCT colName FROM table_name;

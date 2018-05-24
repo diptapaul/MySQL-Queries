@@ -1,0 +1,8 @@
+// union all (all data)
+
+SELECT firstName, city FROM custmer
+WHERE city = 'Dhaka'
+UNION ALL
+SELECT firstName, city FROM suppliers
+WHERE city = 'Dhaka'
+ORDER BY firstName;

@@ -1,0 +1,7 @@
+// right join (fully equal data are showed and the rest of the data are showed null in left side)
+
+SELECT orders.orderNumber, custmer.firstName, custmer.lastName
+FROM orders
+RIGHT JOIN custmer
+ON orders.orderNumber = custmer.id
+ORDER BY custmer.firstName;

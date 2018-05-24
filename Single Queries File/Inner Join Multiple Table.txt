@@ -1,0 +1,7 @@
+SELECT orders.orderNumber, custmer.firstName, custmer.lastName, products.name
+FROM orders
+INNER JOIN products
+	ON orders.productId = products.id
+INNER JOIN custmer
+	ON custmer.id = orders.customerId
+ORDER BY orders.orderNumber;

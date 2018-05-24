@@ -1,0 +1,4 @@
+UPDATE custmer
+	SET salary = salary*0.25
+    WHERE age IN (SELECT age FROM customer_bup
+                  WHERE age >= 30);

@@ -1,0 +1,6 @@
+// left join (fully equal data are showed and the rest of the data are showed null in right side)
+
+SELECT custmer.firstName, custmer.lastName, orders.orderNumber, orders.orderDate
+FROM custmer
+LEFT JOIN orders
+ON custmer.id = orders.customerId;

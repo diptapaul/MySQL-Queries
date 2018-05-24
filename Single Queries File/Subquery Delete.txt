@@ -1,0 +1,5 @@
+DELETE FROM customer_bup
+	WHERE age IN (
+		SELECT age FROM custmer
+        	WHERE age = 29
+);

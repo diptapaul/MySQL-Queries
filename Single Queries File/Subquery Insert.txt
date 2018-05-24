@@ -1,0 +1,5 @@
+INSERT INTO customer_bup
+	SELECT * FROM custmer
+    	WHERE id IN(
+        	SELECT id FROM custmer
+        );

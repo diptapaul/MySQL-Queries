@@ -1,0 +1,2 @@
+SELECT * FROM table_name LIMIT 3; // first 3 rows data
+SELECT * FROM table_name LIMIT 3, 4; // 4 - 7 rows data

@@ -1,0 +1,3 @@
+SELECT firstName FROM custmer
+	WHERE id IN (SELECT id FROM custmer 
+                 WHERE zipcode > 1400);

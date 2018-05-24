@@ -1,0 +1,10 @@
+CREATE TABLE orders(
+	id INT NOT NULL AUTO_INCREMENT,
+	orderNumber VARCHAR(255),
+	productId INT,
+	customerId INT,
+	orderDate DATETIME DEFAULT CURRENT_TIMESTAMP,
+	PRIMARY KEY(id),
+	FOREIGN KEY(productId) REFERENCES products(id),
+	FOREIGN KEY(customerId) REFERENCES products(id)
+);

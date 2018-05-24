@@ -1,0 +1,5 @@
+// update one column for all rows with values of other tables column
+
+UPDATE customer_bup
+	SET age = (SELECT age FROM custmer 
+               WHERE custmer.id = customer_bup.id);

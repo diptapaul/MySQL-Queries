@@ -1,0 +1,1 @@
+SELECT * FROM table_name WHERE colName BETWEEN min_range and max_range;

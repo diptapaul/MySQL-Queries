@@ -1,0 +1,7 @@
+// inner join(fully equal data are showed)
+
+SELECT custmer.firstName, custmer.lastName, orders.orderNumber
+FROM custmer
+INNER JOIN orders
+ON custmer.id = orders.customerId
+ORDER BY custmer.firstName;

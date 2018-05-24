@@ -1,0 +1,330 @@
+// create database
+
+CREATE DATABASE database_name;
+
+
+// drop database
+
+DROP DATABASE database_name;
+
+
+// create table
+
+CREATE TABLE table_name(id INT NOT NULL AUTO_INCREMENT, firstName VARCHAR(255), PRIMARY KEY(id));
+
+
+// insert data into table
+
+INSERT INTO table_name(col1, col2, ......, coln) VALUES(val1, val2, ......, valn), (val1, val2, ......, valn);
+
+
+// update value
+
+UPDATE table_name SET colname = 'value' WHERE id = 2;
+
+
+// delete data
+
+DELETE FROM table_name WHERE id = 12;
+
+
+// alter statement add column
+
+ALTER TABLE table_name ADD colName TYPE(SIZE);
+
+
+// alter statement change column type
+
+ALTER TABLE table_name MODIFY COLUMN colName newType(size);
+
+
+// alter statment delete column
+
+ALTER TABLE table_name DROP COLUMN colName;
+
+
+// select data
+
+SELECT * FROM table_name;
+SELECT * FROM table_name LIMIT 3; // first 3 rows data
+SELECT * FROM table_name LIMIT 3, 4; // 4 - 7 rows data
+SELECT col1, col2 FROM table_name;
+SELECT * FROM table_name WHERE condition;
+SELECT * FROM table_name ORDER BY colName ASC/DESC;
+SELECT DISTINCT colName FROM table_name;
+
+
+// between operator
+
+SELECT * FROM table_name WHERE colName BETWEEN min_range and max_range;
+
+
+// like operator
+
+SELECT * FROM table_name WHERE colName LIKE '%word%/%word/word%';
+SELECT * FROM table_name WHERE colName NOT LIKE '%word%/%word/word%';
+
+
+// in operator
+
+SELECT * FROM table_name WHERE colName IN ('word', 'word');
+
+
+// create and drop index
+
+CREATE INDEX index_name ON table_name(colName);
+DROP INDEX index_name ON table_name;
+
+
+// foreign key and relationships
+
+CREATE TABLE orders(
+	id INT NOT NULL AUTO_INCREMENT,
+	orderNumber VARCHAR(255),
+	productId INT,
+	customerId INT,
+	orderDate DATETIME DEFAULT CURRENT_TIMESTAMP,
+	PRIMARY KEY(id),
+	FOREIGN KEY(productId) REFERENCES products(id),
+	FOREIGN KEY(customerId) REFERENCES products(id)
+);
+
+
+// inner join(fully equal data are showed)
+
+SELECT custmer.firstName, custmer.lastName, orders.orderNumber
+FROM custmer
+INNER JOIN orders
+ON custmer.id = orders.customerId
+ORDER BY custmer.firstName;
+
+
+// left join (fully equal data are showed and the rest of the data are showed null in right side)
+
+SELECT custmer.firstName, custmer.lastName, orders.orderNumber, orders.orderDate
+FROM custmer
+LEFT JOIN orders
+ON custmer.id = orders.customerId;
+
+
+// right join (fully equal data are showed and the rest of the data are showed null in left side)
+
+SELECT orders.orderNumber, custmer.firstName, custmer.lastName
+FROM orders
+RIGHT JOIN custmer
+ON orders.orderNumber = custmer.id
+ORDER BY custmer.firstName;
+
+
+// union (common data)
+
+SELECT firstName, city FROM custmer
+WHERE city = 'Dhaka'
+UNION
+SELECT firstName, city FROM suppliers
+WHERE city = 'Dhaka'
+ORDER BY firstName;
+
+
+// union all (all data)
+
+SELECT firstName, city FROM custmer
+WHERE city = 'Dhaka'
+UNION ALL
+SELECT firstName, city FROM suppliers
+WHERE city = 'Dhaka'
+ORDER BY firstName;
+
+
+// inner join multiple table
+
+SELECT orders.orderNumber, custmer.firstName, custmer.lastName, products.name
+FROM orders
+INNER JOIN products
+	ON orders.productId = products.id
+INNER JOIN custmer
+	ON custmer.id = orders.customerId
+ORDER BY orders.orderNumber;
+
+
+// delete all data from table
+
+DELETE FROM table_name;
+or
+TRUNCATE table_name;
+
+
+// subquery - select
+
+SELECT firstName FROM custmer
+	WHERE id IN (SELECT id FROM custmer 
+                 WHERE zipcode > 1400);
+
+
+// suquery - insert
+
+INSERT INTO customer_bup
+	SELECT * FROM custmer
+    	WHERE id IN(
+        	SELECT id FROM custmer
+        );
+
+
+// subquery - update
+
+UPDATE custmer
+	SET salary = salary*0.25
+    WHERE age IN (SELECT age FROM customer_bup
+                  WHERE age >= 30);
+
+
+// subquery - delete
+
+DELETE FROM customer_bup
+	WHERE age IN (
+		SELECT age FROM custmer
+        	WHERE age = 29
+);
+
+
+// update one column for all rows with values of other tables column
+
+UPDATE customer_bup
+	SET age = (SELECT age FROM custmer 
+               WHERE custmer.id = customer_bup.id);
+
+
+// select last n rows
+
+SELECT * FROM (
+    SELECT * FROM customer_bup ORDER BY id DESC LIMIT 5
+) sub ORDER BY id ASC;
+
+
+// wildcards operators - %, _
+
+% - Matches one or more characters.
+_ - Matches one characters.
+
+The percent sign represents zero, one or multiple characters. 
+The underscore represents a single number or character. 
+The symbols can be used in combinations.
+
+
+// sql aliases for column
+
+Aliases can be useful when:
+	1. There are more than one table involved in a query.
+	2. Functions are used in the query.
+	3. Column names are big or not very readable.
+	4. Two or more columns are combined together.
+
+
+SELECT CONCAT(firstName, ' ', lastName) AS 'Name', 
+CONCAT(address, ', ', city, ', ', division) AS 'Address' FROM custmer;
+
+
+// sql aliases for table
+
+SELECT o.id, o.orderDate, c.firstName, c.lastName
+FROM orders AS o, custmer AS c;
+
+
+// Aggregate Functions
+
+SELECT AVG(age) FROM custmer;
+SELECT COUNT(age) FROM custmer;
+SELECT MAX(age) FROM custmer;
+SELECT MIN(age) FROM custmer;
+SELECT SUM(age) FROM custmer;
+
+
+// Group By Statement (used with aggregate function)
+
+SELECT age, COUNT(age) FROM custmer
+GROUP BY age;
+
+
+// Having Clause
+
+The SQL HAVING Clause is used in combination with the GROUP BY Clause to
+restrict the groups of returned rows to only those whose the condition is
+true.
+
+SELECT age, COUNT(age) FROM custmer
+GROUP BY age
+HAVING COUNT(age) >= 2;
+
+
+// Create View
+
+View Means virtual table.
+
+CREATE VIEW customer_view AS
+	SELECT id, firstName, lastName
+    	FROM custmer
+        	WHERE firstName IS NOT NULL;
+
+
+// Select View
+
+SELECT * FROM customer_view;
+
+
+// Insert Data into a View
+
+INSERT INTO customer_view VALUES(
+	13, 'Healal', 'Khan'
+);
+
+
+// With Check Option
+
+The purpose of the with check option is to ensure that all update
+and inserts satisfy the condition in the view definition. If the
+condition is satisfied, the data are inserted or updated. Otherwise
+it will send error and won't take the query.
+
+
+// Update Data on View
+
+UPDATE view_name SET colname = 'value' WHERE id = 2;
+
+
+// Delete Data From view
+
+DELETE FROM view_name WHERE id = 12;
+
+
+// Drop View
+
+DROP VIEW view_name;
+
+
+// UCASE (Upper Case) Fuction and LCASE (Lower Case) Function
+
+SELECT UCASE(firstName) AS 'Name' FROM custmer;
+SELECT LCASE(firstName) AS 'Name' FROM custmer;
+
+
+// MID Function
+one can show the first one or more character from a column using mid function.
+
+SELECT MID(city, 1, 3) AS 'Short City' FROM custmer; // first three character of city will be showed
+
+
+// LENGTH Function
+
+SELECT LENGTH(address) AS 'Address Len' FROM custmer; // lenght of address will be showed
+
+
+// ROUND Function
+
+SELECT ROUND(salary) AS 'Rounded Salary' FROM custmer; // rounded salary will be showed
+
+
+// Now() Function
+
+Now() will showed the current date and time
+
+SELECT firstName, lastName, Now() AS 'Date' FROM custmer;

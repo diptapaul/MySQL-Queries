@@ -1,0 +1,2 @@
+SELECT * FROM table_name WHERE colName LIKE '%word%/%word/word%';
+SELECT * FROM table_name WHERE colName NOT LIKE '%word%/%word/word%';
